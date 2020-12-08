@@ -109,7 +109,7 @@ class Window(tkinter.Tk):
     def load(self):
         file=filedialog.askopenfilename(
             filetypes=[('weather',self._file_pattern)])
-        if file!='':
+        if type(file).__name__=='str' and file!='':
             try:
                 self._weather.load(file)
                 self.title('Weather '+str(self._weather.year()))
