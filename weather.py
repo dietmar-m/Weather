@@ -72,7 +72,9 @@ cond: {cond1}, {cond2}, {cond3}, {cond4}"""
                 year=time.localtime()[0]
             #filename=os.getenv('HOME')+'/weather-'+str(year)
             filename='weather-'+str(year)
-            self._year=year
+
+        self.__init__()
+        self._year=year
 
         file=open(filename,'r')
         data='\n'
