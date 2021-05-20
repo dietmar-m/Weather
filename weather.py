@@ -129,6 +129,10 @@ cond: {cond1}, {cond2}, {cond3}, {cond4}"""
             file.close()
             raise e
         file.close()
+        print("Year:",self._year)
+        print("Avg temp:",self.avg_temp())
+        print("Avg rain:",self.avg_rain())
+        print("Avg wind:",self.avg_wind())
         
     def weather(self,day):
         if day<1 or day>=len(self._weather):
@@ -199,3 +203,22 @@ cond: {cond1}, {cond2}, {cond3}, {cond4}"""
             return (0,Weather._max_wind)
         else:
             return (0,0)
+
+    def avg_temp(self):
+        return self._avg(Weather.T_MAX)-self._avg(Weather.T_MIN)
+
+    def avg_rain(self):
+        return self._avg(Weather.RAIN)
+
+    def avg_wind(self):
+        return self._avg(Weather.WIND)
+
+    def _avg(self,index):
+        sum=0
+        count=0
+        for n in range(Weather.YEAR_DAYS):
+            w=self._weather[n]
+            if w:
+                sum+=w[index]
+                count+=1
+        return sum/count

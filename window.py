@@ -44,6 +44,7 @@ from toolbar import *
 class Window(tkinter.Tk):
     _file_pattern='weather-[0-9][0-9][0-9][0-9]'
     _font=('Ariel',8)
+    _avg_templ="Averages: temp={:.1f}°C, rain={:.1f}l/m², wind={:.0f}km/h"
     
     #def __init__(self,width=3*Weather.year_days):
     def __init__(self):
@@ -77,6 +78,11 @@ class Window(tkinter.Tk):
 
         self._ruler=Ruler(self,self._weather)
         self._ruler.pack(side=tkinter.TOP,fill=tkinter.X)
+
+        self._avg=tkinter.Label(master=self,height=1,
+                                font=Window._font,bg='white',
+                                justify=tkinter.LEFT)
+        self._avg.pack(side=tkinter.TOP,fill=tkinter.X,anchor=tkinter.W)
 
         self._msg=tkinter.Label(master=self,height=2,
                                 font=Window._font,
@@ -117,6 +123,10 @@ class Window(tkinter.Tk):
                 self._rain.draw()
                 self._wind.draw()
                 self._ruler.draw()
+                self._avg.config(text=self._avg_templ.format(self._weather.avg_temp(),
+                                                             self._weather.avg_rain(),
+                                                             self._weather.avg_wind()))
+
             except Exception as e:
                 self.error('Error reading file '+file,e)
 
