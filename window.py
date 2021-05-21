@@ -57,7 +57,7 @@ class Window(tkinter.Tk):
             self.error(e)
         self._weather=Weather()
         self._resize=True
-        
+
         self._temp=Graph(self,self._weather,
                          [(Weather.T_MAX,'red'),(Weather.T_MIN,'blue')],
                          'Temperature [°C]')
@@ -84,7 +84,7 @@ class Window(tkinter.Tk):
                                 justify=tkinter.LEFT)
         self._avg.pack(side=tkinter.TOP,fill=tkinter.X,anchor=tkinter.W)
 
-        self._msg=tkinter.Label(master=self,height=2,
+        self._msg=tkinter.Label(master=self,height=3,
                                 font=Window._font,
                                 justify=tkinter.LEFT)
         self._msg.pack(side=tkinter.TOP,fill=tkinter.X,anchor=tkinter.W)
@@ -156,7 +156,8 @@ class Window(tkinter.Tk):
             self.wm_minsize(width=e.width,height=e.height)
             self._resize=False
         if e.widget==self._msg:
-            self._msg.config(wraplength=e.width)
+            #self._msg.config(wraplength=e.width)
+            self._msg.config(wraplength=e.width * .99)
 
 ##logging.basicConfig(stream=sys.stderr,
 ##                    level=logging.DEBUG,
