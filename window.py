@@ -44,7 +44,10 @@ from toolbar import *
 class Window(tkinter.Tk):
     _file_pattern='weather-[0-9][0-9][0-9][0-9]'
     _font=('Ariel',8)
-    _avg_templ="Averages: temp={:.1f}°C, rain={:.1f}l/m², wind={:.0f}km/h"
+##    _avg_templ="Averages: temp={:.1f}°C, rain={:.1f}l/m², wind={:.0f}km/h"
+    _temp_templ="min={:.1f}°C, max={:.1f}°C, avg={:.1f}°C"
+    _rain_templ="min={:.1f}l/m², max={:.1f}l/m², avg={:.1f}l/m²"
+    _wind_templ="min={:.0f}km/h, max={:.0f}km/h, avg={:.0f}km/h"
     
     #def __init__(self,width=3*Weather.year_days):
     def __init__(self):
@@ -63,26 +66,38 @@ class Window(tkinter.Tk):
                          'Temperature [°C]')
         #self._temp.pack(side=tkinter.TOP,fill=tkinter.X)
         self._temp.pack(side=tkinter.TOP,fill=tkinter.BOTH,expand=1)
+        self._temp_foot=tkinter.Label(master=self,height=1,
+                                      font=Window._font,bg='white',
+                                      justify=tkinter.LEFT)
+        self._temp_foot.pack(side=tkinter.TOP,fill=tkinter.X,anchor=tkinter.W)
 
         self._rain=Graph(self,self._weather,
                          [(Weather.RAIN,'blue')],
                          'Rain [l/m²]')
         #self._rain.pack(side=tkinter.TOP,fill=tkinter.X)
         self._rain.pack(side=tkinter.TOP,fill=tkinter.BOTH,expand=1)
+        self._rain_foot=tkinter.Label(master=self,height=1,
+                                      font=Window._font,bg='white',
+                                      justify=tkinter.LEFT)
+        self._rain_foot.pack(side=tkinter.TOP,fill=tkinter.X,anchor=tkinter.W)
 
         self._wind=Graph(self,self._weather,
                          [(Weather.WIND,'green'),(Weather.BLAST,'red')],
                          'Wind [km/h]')
         #self._wind.pack(side=tkinter.TOP,fill=tkinter.X)
         self._wind.pack(side=tkinter.TOP,fill=tkinter.BOTH,expand=1)
+        self._wind_foot=tkinter.Label(master=self,height=1,
+                                      font=Window._font,bg='white',
+                                      justify=tkinter.LEFT)
+        self._wind_foot.pack(side=tkinter.TOP,fill=tkinter.X,anchor=tkinter.W)
 
         self._ruler=Ruler(self,self._weather)
         self._ruler.pack(side=tkinter.TOP,fill=tkinter.X)
 
-        self._avg=tkinter.Label(master=self,height=1,
-                                font=Window._font,bg='white',
-                                justify=tkinter.LEFT)
-        self._avg.pack(side=tkinter.TOP,fill=tkinter.X,anchor=tkinter.W)
+##        self._avg=tkinter.Label(master=self,height=1,
+##                                font=Window._font,bg='white',
+##                                justify=tkinter.LEFT)
+##        self._avg.pack(side=tkinter.TOP,fill=tkinter.X,anchor=tkinter.W)
 
         self._msg=tkinter.Label(master=self,height=3,
                                 font=Window._font,
@@ -123,9 +138,18 @@ class Window(tkinter.Tk):
                 self._rain.draw()
                 self._wind.draw()
                 self._ruler.draw()
-                self._avg.config(text=self._avg_templ.format(self._weather.avg_temp(),
-                                                             self._weather.avg_rain(),
-                                                             self._weather.avg_wind()))
+##                self._avg.config(text=self._avg_templ.format(self._weather.avg_temp(),
+##                                                             self._weather.avg_rain(),
+##                                                             self._weather.avg_wind()))
+                self._temp_foot.config(text=self._temp_templ.format(self._weather.min_temp(),
+                                                                    self._weather.max_temp(),
+                                                                    self._weather.avg_temp()))
+                self._rain_foot.config(text=self._rain_templ.format(self._weather.min_rain(),
+                                                                    self._weather.max_rain(),
+                                                                    self._weather.avg_rain()))
+                self._wind_foot.config(text=self._wind_templ.format(self._weather.min_wind(),
+                                                                    self._weather.max_wind(),
+                                                                    self._weather.avg_wind()))
 
             except Exception as e:
                 self.error('Error reading file '+file,e)

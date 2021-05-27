@@ -130,8 +130,14 @@ cond: {cond1}, {cond2}, {cond3}, {cond4}"""
             raise e
         file.close()
         print("Year:",self._year)
+        print("Min temp:",self.min_temp())
+        print("Max temp:",self.max_temp())
         print("Avg temp:",self.avg_temp())
+        print("Min rain:",self.min_rain())
+        print("Max rain:",self.max_rain())
         print("Avg rain:",self.avg_rain())
+        print("Min wind:",self.min_wind())
+        print("Max wind:",self.max_wind())
         print("Avg wind:",self.avg_wind())
         
     def weather(self,day):
@@ -204,14 +210,48 @@ cond: {cond1}, {cond2}, {cond3}, {cond4}"""
         else:
             return (0,0)
 
+    def min_temp(self):
+        return self._min(Weather.T_MIN)
+
+    def max_temp(self):
+        return self._max(Weather.T_MAX)
+
     def avg_temp(self):
         return self._avg(Weather.T_MAX)-self._avg(Weather.T_MIN)
+
+    def min_rain(self):
+        return self._min(Weather.RAIN)
+
+    def max_rain(self):
+        return self._max(Weather.RAIN)
 
     def avg_rain(self):
         return self._avg(Weather.RAIN)
 
+    def min_wind(self):
+        return self._min(Weather.WIND)
+
+    def max_wind(self):
+        return self._max(Weather.BLAST)
+
     def avg_wind(self):
         return self._avg(Weather.WIND)
+
+    def _min(self,index):
+        min=None
+        for n in range(Weather.YEAR_DAYS):
+            w=self._weather[n]
+            if w and (min==None or min>w[index]):
+                min=w[index]
+        return min
+
+    def _max(self,index):
+        max=None
+        for n in range(Weather.YEAR_DAYS):
+            w=self._weather[n]
+            if w and (max==None or max<w[index]):
+                max=w[index]
+        return max
 
     def _avg(self,index):
         sum=0
